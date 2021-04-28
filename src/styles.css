@@ -1,0 +1,37 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.question {
+    margin-top: 100px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.options {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.options button {
+    background: none;
+    padding: 10px;
+    color: white;
+    border: 1px solid white;
+}
+
+body {
+    background-color: #2C3A47;
+}
+
+#root {
+    background: none;
+}
