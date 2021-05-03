@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Quiz from './components/Quiz';
+import App from './components/App';
 import './styles.css'
 
 ReactDOM.render( <
-    Quiz / > ,
+    App / > ,
     document.getElementById('root')
 );
 

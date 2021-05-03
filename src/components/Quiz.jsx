@@ -1,14 +1,18 @@
 import Options from "./Options"
 import Question from './Question'
-import Confetti from 'react-dom-confetti'
 import { useState } from 'react'
+import { useHistory } from "react-router"
+let choice = []
+let score = 0
+// let intervalId
+
 
 export default function Quiz(props) {
-    let [score, setScore] = useState(0)
-    let [choice, setChoice] = useState([])
+
     let [counter, setCounter] = useState(0)
     let [selected, setSelected] = useState(null)
-    let [trigger, setTrigger] = useState(false)
+    // let [progressWidth, setProgressWidth] = useState(100)
+    let history = useHistory()
     let questions = [
         {
             question: 'Who sells sea-shells at the sea shore?',
@@ -51,36 +55,69 @@ export default function Quiz(props) {
             correctOption: 0
         }
     ]
+    let updateChoice = (index) => {
+        choice.push(questions[counter].options[index])
+    }
     let clickHandler = (index) => {
-        if(selected!==null){
+        if (selected !== null) {
             return
         }
+        // startInterval()
         if (index === questions[counter].correctOption) {
-            setScore(score + 10)
-            setTrigger(true)
+            score += 10
         }
+       
         setSelected(index)
+        // stopInterval(intervalId)
         if (counter === questions.length - 1) {
+            updateChoice(index)
+
+            let userData = questions.map((question, index) => [question.question, question.options[question.correctOption], choice[index], question.options[question.correctOption] === choice[index]])
+            setTimeout(() => history.push({
+                pathname: './results',
+                state: { data: userData, score: score }
+            }), 1000)
+
             console.log('Game Over')
         }
         else {
             setTimeout(() => {
                 setCounter(counter + 1)
+                // setProgressWidth(100)
                 setSelected(null)
-                setTrigger(false)
-            }, 2000)
+            }, 1000)
         }
 
-        let choiceCopy = [...choice]
-        choiceCopy.push(questions[counter].options[index])
-        setChoice(choiceCopy)
+        updateChoice(index)
     }
+    // let count = 0
+    // useEffect(() => {
+    //     function startInterval(){
+    //     let intervalId = setInterval(() => {
+    //         if(progressWidth <=0){
+    //             clearInterval(intervalId)
+    //         }
+    //         setProgressWidth((p) => p - 0.005)
+    //     }, 10)
+    // }
+    // }, [])
+
     return (
         <div className="question">
             <p>Score: {score}</p>
-            <Question value={questions[counter].question} />
-            <div className='options'>{questions[counter].options.map((value, index) => <Options isSelected = {selected === index} option={value} index={index} method={clickHandler} isCorrect={index === questions[counter].correctOption} key={index} />)}</div>
-            <Confetti active={trigger} />
+            <Question value={questions[counter].question}/>
+            <div className='options'>
+                {questions[counter].options.map((value, index) =>
+                    <Options
+                        isSelected={selected === index}
+                        option={value}
+                        index={index}
+                        method={clickHandler}
+                        isCorrect={index === questions[counter].correctOption}
+                        key={index}
+                    />)}
+            </div>
+            {/* <div className="progress-bar" style={{ width: progressWidth + '%', backgroundColor: progressWidth < 67 ? progressWidth < 34 ? 'red' : 'yellowgreen' : 'seagreen' }}></div> */}
         </div>
     )
 }
