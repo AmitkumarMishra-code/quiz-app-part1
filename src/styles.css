@@ -85,10 +85,11 @@ body {
     width: 25%;
 }
 
-
-/* .progress-bar {
+.progress-bar {
+    position: absolute;
     height: 15px;
     background-color: seagreen;
     border-radius: 12px;
     transition: width ease-in;
-} */
+    top: 0;
+}

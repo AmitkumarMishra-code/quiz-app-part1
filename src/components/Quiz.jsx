@@ -1,17 +1,16 @@
 import Options from "./Options"
 import Question from './Question'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useHistory } from "react-router"
 let choice = []
 let score = 0
-// let intervalId
-
+let intervalId;
 
 export default function Quiz(props) {
 
     let [counter, setCounter] = useState(0)
     let [selected, setSelected] = useState(null)
-    // let [progressWidth, setProgressWidth] = useState(100)
+    let [progressWidth, setProgressWidth] = useState(100)
     let history = useHistory()
     let questions = [
         {
@@ -53,59 +52,91 @@ export default function Quiz(props) {
             question: 'With great power comes what?',
             options: ['great responsibility', 'huge power bills', 'lunacy', 'narcissism'],
             correctOption: 0
-        }
+        },
+        {
+            question: `What's the name of Homer Simpson's son?`,
+            options: ['Art', 'Rampart', 'Bart', 'Bogart'],
+            correctOption: 2
+        },
+        {
+            question: `What is Chef Gusteau's favourite quote?`,
+            options: ['Doesnt matter how you look', 'You should read a book', 'There is wisdom in every nook', 'Anybody can cook'],
+            correctOption: 3
+        },
     ]
     let updateChoice = (index) => {
-        choice.push(questions[counter].options[index])
+        if (index != null) {
+            choice.push(questions[counter].options[index])
+        }
+        else {
+            choice.push(null)
+        }
     }
     let clickHandler = (index) => {
         if (selected !== null) {
             return
         }
-        // startInterval()
+        clearInterval(intervalId)
         if (index === questions[counter].correctOption) {
             score += 10
         }
-       
+
         setSelected(index)
-        // stopInterval(intervalId)
         if (counter === questions.length - 1) {
             updateChoice(index)
 
-            let userData = questions.map((question, index) => [question.question, question.options[question.correctOption], choice[index], question.options[question.correctOption] === choice[index]])
-            setTimeout(() => history.push({
-                pathname: './results',
-                state: { data: userData, score: score }
-            }), 1000)
+            displayResults()
 
             console.log('Game Over')
         }
         else {
             setTimeout(() => {
                 setCounter(counter + 1)
-                // setProgressWidth(100)
+                setProgressWidth(100)
                 setSelected(null)
+
             }, 1000)
         }
 
         updateChoice(index)
     }
-    // let count = 0
-    // useEffect(() => {
-    //     function startInterval(){
-    //     let intervalId = setInterval(() => {
-    //         if(progressWidth <=0){
-    //             clearInterval(intervalId)
-    //         }
-    //         setProgressWidth((p) => p - 0.005)
-    //     }, 10)
-    // }
-    // }, [])
+
+    function displayResults(){
+        let userData = questions.map((question, index) => [question.question, question.options[question.correctOption], choice[index], question.options[question.correctOption] === choice[index]])
+            setTimeout(() => history.push({
+                pathname: './results',
+                state: { data: userData, score: score }
+            }), 1000)
+    }
+    useEffect(() => {
+        intervalId = setInterval(() => {
+
+            setProgressWidth((p) => p - 0.1)
+        }, 10)
+        return () => clearInterval(intervalId)
+
+    }, [counter])
+
+    useEffect(() => {
+        if (progressWidth <= 0) {
+            clearInterval(intervalId)
+            updateChoice()
+            setSelected(null)
+            if (counter < questions.length - 1) {
+                setCounter(counter + 1)
+                setProgressWidth(100)
+            }
+            else{
+                displayResults()
+            }
+        }
+        // eslint-disable-next-line
+    }, [progressWidth])
 
     return (
         <div className="question">
             <p>Score: {score}</p>
-            <Question value={questions[counter].question}/>
+            <Question value={questions[counter].question} />
             <div className='options'>
                 {questions[counter].options.map((value, index) =>
                     <Options
@@ -117,7 +148,7 @@ export default function Quiz(props) {
                         key={index}
                     />)}
             </div>
-            {/* <div className="progress-bar" style={{ width: progressWidth + '%', backgroundColor: progressWidth < 67 ? progressWidth < 34 ? 'red' : 'yellowgreen' : 'seagreen' }}></div> */}
+            <div className="progress-bar" style={{ width: progressWidth + '%', backgroundColor: progressWidth < 67 ? progressWidth < 34 ? 'red' : 'yellowgreen' : 'seagreen' }}></div>
         </div>
     )
 }
