@@ -147,7 +147,11 @@ export default function Quiz(props) {
                         key={index}
                     />)}
             </div>
-            <div className="progress-bar" style={{ width: progressWidth + '%', backgroundColor: progressWidth < 67 ? progressWidth < 34 ? 'red' : 'yellowgreen' : 'seagreen' }}></div>
+            <div className="progress-bar-top" style={{ width: progressWidth + '%', backgroundColor: progressWidth < 67 ? progressWidth < 34 ? 'red' : 'yellowgreen' : 'seagreen' }}></div>
+            <div className="progress-bar-left" style={{ height: progressWidth + '%', backgroundColor: progressWidth < 67 ? progressWidth < 34 ? 'red' : 'yellowgreen' : 'seagreen' }}></div>
+            <div className="progress-bar-bottom" style={{ width: progressWidth + '%', backgroundColor: progressWidth < 67 ? progressWidth < 34 ? 'red' : 'yellowgreen' : 'seagreen' }}></div>
+            <div className="progress-bar-right" style={{ height: progressWidth + '%', backgroundColor: progressWidth < 67 ? progressWidth < 34 ? 'red' : 'yellowgreen' : 'seagreen' }}></div>
+
         </div>
     )
 }

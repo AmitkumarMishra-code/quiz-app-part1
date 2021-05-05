@@ -85,11 +85,53 @@ body {
     width: 25%;
 }
 
-.progress-bar {
+.question .progress-bar-top,
+.question .progress-bar-bottom,
+.question .progress-bar-left,
+.question .progress-bar-right {
+    display: flex;
     position: absolute;
-    height: 15px;
     background-color: seagreen;
-    border-radius: 12px;
+    /* border-radius: 12px; */
     transition: width ease-in;
+}
+
+.question .progress-bar-top {
+    width: 100%;
+    height: 15px;
     top: 0;
+    left: 0;
+    align-items: flex-start;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.question .progress-bar-bottom {
+    width: 100%;
+    height: 15px;
+    bottom: 0;
+    right: 0;
+    align-items: flex-end;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.question .progress-bar-left {
+    width: 15px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    align-items: flex-start;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.question .progress-bar-right {
+    width: 15px;
+    height: 100%;
+    right: 0;
+    bottom: 0;
+    align-items: flex-end;
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
 }
