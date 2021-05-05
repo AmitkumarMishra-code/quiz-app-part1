@@ -91,10 +91,9 @@ export default function Quiz(props) {
         }
         else {
             setTimeout(() => {
+                setSelected(null)
                 setCounter(counter + 1)
                 setProgressWidth(100)
-                setSelected(null)
-
             }, 1000)
         }
 
